@@ -28,7 +28,7 @@ hexo new <title>
 npm run server
 ```
 
-## markdown引用图片的问题
+## markdown引用图片的方法
 - 方式1：在`source`目录中创建images文件夹，并将文章所要引用的图片存储在这；markdown引用图片时使用`绝对路径`，根目录为`source`所在的目录；
   - 这种方式适合引用图片较少的情形；因为如果将所有文章的图片都在存储在该文件夹中，文件夹体积会过大，且不方便查找；
   - markdown语法示例：`![/images/1.png]`
