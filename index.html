@@ -168,10 +168,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-07-03 20:49:49 / 修改时间：23:23:43" itemprop="dateCreated datePublished" datetime="2023-07-03T20:49:49+08:00">2023-07-03</time>
+              <time title="创建时间：2023-07-03 20:49:49" itemprop="dateCreated datePublished" datetime="2023-07-03T20:49:49+08:00">2023-07-03</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-07-04 01:06:23" itemprop="dateModified" datetime="2023-07-04T01:06:23+08:00">2023-07-04</time>
+              </span>
 
           
 
@@ -240,10 +246,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-07-03 20:03:33 / 修改时间：23:23:43" itemprop="dateCreated datePublished" datetime="2023-07-03T20:03:33+08:00">2023-07-03</time>
+              <time title="创建时间：2023-07-03 20:03:33" itemprop="dateCreated datePublished" datetime="2023-07-03T20:03:33+08:00">2023-07-03</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-07-04 01:06:23" itemprop="dateModified" datetime="2023-07-04T01:06:23+08:00">2023-07-04</time>
+              </span>
 
           
 
@@ -269,10 +281,27 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run server</span><br></pre></td></tr></table></figure>
 
 <h2 id="markdown引用图片的问题"><a href="#markdown引用图片的问题" class="headerlink" title="markdown引用图片的问题"></a>markdown引用图片的问题</h2><ul>
-<li>方式1：在<code>source</code>目录中创建images文件夹，存入要引用的图片；markdown引用图片时使用<code>绝对路径</code>，根目录为<code>source</code>所在的目录；这种方式引用图片较少的情形，因为所有文章都从该目录引用图片；</li>
-<li>方式2：修改<code>_config.yml</code>中<code>wtriting</code>部分<code>post_asset_folder: true</code>，此时通过<code>hexo new</code>新建文章，会同时在<code>_posts</code>目录中生成同名的文件夹，使用该文件夹来存放该文章所用引用的图片，markdown引用图片时使用<code>相对路径</code>；这种方式每篇文章都有一个对应的文件夹用于存放图片，所以图片较多时查找起来更加方便，但这种方式可能在归档页和首页图片加载失败，这是markdown引用图片的问题，解决方法是使用相应的插件语法，而不能使用markdown引用图片语法；</li>
-<li>方式3：修改<code>_config.yml</code>中<code>wtriting</code>部分，修改如下，markdown引用图片时使用<code>相对路径</code>；相较于方式2，支持markdown引用图片语法；<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">marked:</span></span><br><span class="line">  <span class="attr">prependRoot:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">postAsset:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure></li>
-<li>引用图片的详细说明，建议查看官方文档<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/asset-folders">资源文件夹</a>;</li>
+<li>方式1：在<code>source</code>目录中创建images文件夹，并将文章所要引用的图片存储在这；markdown引用图片时使用<code>绝对路径</code>，根目录为<code>source</code>所在的目录；<ul>
+<li>这种方式适合引用图片较少的情形；因为如果将所有文章的图片都在存储在该文件夹中，文件夹体积会过大，且不方便查找；</li>
+<li>markdown语法示例：<code>![/images/1.png]</code></li>
+</ul>
+</li>
+<li>方式2：修改<code>_config.yml</code>中<code>wtriting</code>部分<code>post_asset_folder: true</code>，此时通过<code>hexo new &lt;title&gt;</code>新建文章，会同时在<code>_posts</code>目录中生成与文章同名的文件夹，可以使用该文件夹来存放该文章所引用的图片，markdown引用图片时使用<code>相对路径</code>；<ul>
+<li>这种方式因为每篇文章都有一个对应的文件夹用于存放图片，所以适合多图片情形；</li>
+<li>markdown语法示例：<code>![](./pageName/1.png)</code>;</li>
+<li>可能存在的问题：<ol>
+<li>因为每篇文章对应一个文件夹，如果某天新建的标题与之前的一致，那么会创建同名的副本文章和副本文件夹，虽然不影响使用，但更推荐修改新建post文章的命名方式为<code>new_post_name: :year-:month-:day-:title.md</code>，这样文章名会在标题前加上日期，增加区分度；</li>
+<li>虽然文章详情页图片加载正常，但在归档页和首页该图片可能加载失败；解决方法是使用相应的插件语法，而不能使用markdown引用图片语法；</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>方式3：同样修改<code>_config.yml</code>中<code>wtriting</code>部分，并添加markdown支持，修改如下；markdown引用图片时直接使用对应目录中的<code>文件名</code>；<ul>
+<li>这种方式是方式2的改进版，在规定页和首页也支持markdown引用图片语法，而且引用图片的<code>相对路径</code>可以直接省去文件夹名部分，使用起来更加便捷；</li>
+<li>markdown语法示例：<code>![](1.png)</code>;<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">marked:</span></span><br><span class="line">  <span class="attr">prependRoot:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">postAsset:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>引用图片的详细说明，建议查看官方文档<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/asset-folders">资源文件夹</a>;<br><mark>补充</mark>：如果文件名中含有中文，使用vscode自动补全文件名时，会将中文转换为对应unicode码值，但该码值无法正常获取文件，必须手动改回中文文件名才能正常获取；</li>
 </ul>
 
       
