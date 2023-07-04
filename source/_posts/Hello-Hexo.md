@@ -2,6 +2,7 @@
 title: Hello Hexo
 date: 2023-07-03 20:03:33
 tags:
+- hexo
 ---
 ## 安装hexo
 hexo是基于node的网址构建工具，通常会借助npm安装hexo；
