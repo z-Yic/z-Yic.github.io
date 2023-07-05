@@ -15,11 +15,11 @@ tags:
 npm install @layui/layui-vue --save
 ```
 
-## 按需引用组件
+## 按需导入组件
 
-因为全局引入`layui-vue`会一次性加载所有组件，推荐通过插件按需引用；
+因为全局导入`layui-vue`会一次性加载所有组件，推荐通过插件按需导入；
 
-1. 安装自动引用插件；
+1. 安装自动导入插件；
 
    ```bash
    npm install -D unplugin-vue-components unplugin-auto-import
@@ -56,7 +56,7 @@ npm install @layui/layui-vue --save
    })
    ```
 
-## 按需引用所需组件
+## 按需使用组件
 
 1. 查找所需组件，[layui-vue组件](http://www.layui-vue.com/zh-CN/components/color)；
 
@@ -79,7 +79,7 @@ npm install @layui/layui-vue --save
    </template>
    ```
 
-3. 查看组件api文档，按需修改源码；
+3. 查看组件api文档，按需修改；
 
    ![](layui-vue-轮播图组件api.png)
 
@@ -120,7 +120,7 @@ npm install @layui/layui-vue --save
 ## 补充
 
 - 对于组件库的使用，不要求熟记组件源码，即查即用即可；
-- 选项式api的源码，调整成组合式api需要自己手动完成；
-- 组件样式的修改调整，要求掌握相关CSS知识；
-- 因为版本问题(包括vue，node，layui-vue版本)，可能导致有些组件的源码复制到本地无法使用，这时建议查看文档说明，比如：源码中可通过`<lay-icon></lay-icon>`调用内置图标，但本地使用时却发现识别不了`<lay-icon>`标签，后发现[组件图标](http://www.layui-vue.com/zh-CN/components/icon)的方式才引用图标成功；
+- 选项式api源码，调整成组合式api需要自己手动完成；
+- 调整组件样式，除了阅读api文档修改相关属性的取值，有必要掌握CSS相关知识；
+- 版本问题(包括vue，node，layui-vue版本)，可能导致有些组件无法按照预期使用，建议先查看官方文档是否有更新说明，如：源码中可通过`<lay-icon></lay-icon>`调用内置图标，但在本地使用时却发现识别不了`<lay-icon>`标签，后通过[组件图标](http://www.layui-vue.com/zh-CN/components/icon)的方式引用成功；
 
