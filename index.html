@@ -150,6 +150,108 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://z-yic.github.io/2023/07/05/Use-vue-router/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="z-Yic">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="z-Yic note">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/07/05/Use-vue-router/" class="post-title-link" itemprop="url">Use vue-router</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-07-06 03:14:21 / 修改时间：23:29:12" itemprop="dateCreated datePublished" datetime="2023-07-06T03:14:21+08:00">2023-07-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="https://router.vuejs.org/zh/">vue-router</a>是<a target="_blank" rel="noopener" href="https://cn.vuejs.org/">vue</a>的官方路由，主要用于单页应用中通过路由动态渲染组件(使用<a target="_blank" rel="noopener" href="https://cn.vuejs.org/guide/essentials/component-basics.html#dynamic-components">动态组件</a>也可以实现该效果，不过需要额外编写判断逻辑)；</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://router.vuejs.org/">vue-router官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://router.vuejs.org/zh/introduction.html">vue-router文档</a></li>
+</ul>
+<h2 id="安装vue-router"><a href="#安装vue-router" class="headerlink" title="安装vue-router"></a>安装vue-router</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install vue-router@4</span><br></pre></td></tr></table></figure>
+
+<h2 id="案例描述"><a href="#案例描述" class="headerlink" title="案例描述"></a>案例描述</h2><p>3个组件：首页，view1， view2；</p>
+<ul>
+<li>首页组件：包含了3个路由链接以及2个命名视图；</li>
+<li>view1组件：视图1的文本内容，1个跳转到view2的路由链接；</li>
+<li>view2组件：视图2的文本内容，1个跳转到首页的路由链接；</li>
+</ul>
+<h2 id="案例实现"><a href="#案例实现" class="headerlink" title="案例实现"></a>案例实现</h2><h3 id="编写模板文件"><a href="#编写模板文件" class="headerlink" title="编写模板文件"></a>编写模板文件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--src/App.vue--&gt;</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;router-link to=&quot;/&quot; active-class=&quot;clicked&quot;&gt;首页&lt;/router-link&gt; |</span><br><span class="line">  &lt;router-link to=&quot;/view1&quot; active-class=&quot;clicked&quot;&gt;视图1&lt;/router-link&gt; |</span><br><span class="line">  &lt;router-link to=&quot;/view2&quot; active-class=&quot;clicked&quot;&gt;视图2&lt;/router-link&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;router-view name=&quot;view1&quot; /&gt;</span><br><span class="line">    &lt;router-view name=&quot;view2&quot; /&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;style scoped&gt;</span><br><span class="line">.clicked &#123;</span><br><span class="line">  color: aqua;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--src/view/view1.vue--&gt;</span><br><span class="line">&lt;template&gt;</span><br><span class="line">    这是视图1</span><br><span class="line">    &lt;router-link to=&quot;/view2&quot;&gt;视图1-&gt;视图2&lt;/router-link&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--src/view/view2.vue--&gt;</span><br><span class="line">&lt;template&gt;</span><br><span class="line">    这是视图2</span><br><span class="line">    &lt;router-link to=&quot;/&quot;&gt;视图2-&gt;首页&lt;/router-link&gt;</span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="注册路由"><a href="#注册路由" class="headerlink" title="注册路由"></a>注册路由</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--src/router/index.<span class="property">js</span>--&gt;</span><br><span class="line"><span class="keyword">import</span> &#123; createRouter, createWebHashHistory &#125; <span class="keyword">from</span> <span class="string">&quot;vue-router&quot;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&#x27;../App.vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> view1 <span class="keyword">from</span> <span class="string">&#x27;../views/view1.vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> view2 <span class="keyword">from</span> <span class="string">&#x27;../views/view2.vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> routes = [</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">path</span>: <span class="string">&#x27;/&#x27;</span>, </span><br><span class="line">        <span class="attr">component</span>: <span class="title class_">App</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">path</span>: <span class="string">&#x27;/view1&#x27;</span>,</span><br><span class="line">        <span class="attr">components</span>: &#123;</span><br><span class="line">            <span class="attr">view1</span>: view1</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="attr">path</span>: <span class="string">&#x27;/view2&#x27;</span>,</span><br><span class="line">        <span class="attr">components</span>: &#123;</span><br><span class="line">            <span class="attr">view2</span>: view2</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> router = <span class="title function_">createRouter</span>(&#123;</span><br><span class="line">    <span class="attr">history</span>: <span class="title function_">createWebHashHistory</span>(),</span><br><span class="line">    <span class="attr">routes</span>: routes</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> router</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--main.<span class="property">js</span>--&gt;</span><br><span class="line"><span class="keyword">import</span> &#123; createApp &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&#x27;./App.vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">&#x27;./router/index&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">createApp</span>(<span class="title class_">App</span>)</span><br><span class="line">app.<span class="title function_">use</span>(router)</span><br><span class="line">app.<span class="title function_">mount</span>(<span class="string">&#x27;#app&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="效果预览"><a href="#效果预览" class="headerlink" title="效果预览"></a>效果预览</h3><p><img src="/2023/07/05/Use-vue-router/%E9%A6%96%E9%A1%B5%E8%A7%86%E5%9B%BE.png" alt="首页"></p>
+<p><img src="/2023/07/05/Use-vue-router/%E8%A7%86%E5%9B%BE1.png" alt="视图1"></p>
+<p><img src="/2023/07/05/Use-vue-router/%E8%A7%86%E5%9B%BE2.png" alt="视图2"></p>
+<h2 id="问题思考"><a href="#问题思考" class="headerlink" title="问题思考"></a>问题思考</h2><p>其实以上案例与<a target="_blank" rel="noopener" href="https://router.vuejs.org/zh/guide/">官方文档的入门案例</a>在实现方式和功能上有些不同，为什么要用自己写的案例呢？主要是自己项目经验不足，还没有形成定式思维，对于路由的设置有一些自己的想法，所以按照自己的想法进行了构建。自己的想法是否合理？虽然最终效果符合预期，但实际上存在着很多问题，一只菜鸟的个人猜测显然比不过技术团队的智慧结晶；当然暴露问题，也说明自己相关知识掌握的并不熟练，没有理解底层原理；</p>
+<h3 id="问题1-根路由指向"><a href="#问题1-根路由指向" class="headerlink" title="问题1-根路由指向"></a>问题1-根路由指向</h3><p><mark><strong>根路由是否应该直接指向<code>App.vue</code></strong></mark>？</p>
+<p><code>App.vue</code>在项目挂载时会直接渲染到<code>index.html</code>中id为<code>app</code>的元素中，而根路由<code>/</code>是所有路由的顶层路由，且是项目网站的根目录，将根路由<code>/</code>的component字段直接指向<code>App.vue</code>理论上是合理的；</p>
+<p>但是如果这样做了，根路由的路由出口<code>&lt;router-view&gt;</code>放哪呢？也放在<code>App.vue</code>中就显得不合理了！那么就不设置路由出口，发现确实可行，那么索性把根路由的component字段都省略了不更好，删除根路由的component字段后，发现控制台有警告信息-没设置根路由；</p>
+<p>显然将<mark>根路由直接指向<code>App.vue</code>并不合理</mark>，而且<mark>官方的示例代码中并没发现将根由指向<code>App.vue</code>的类似作法</mark>，而是专门创建了一个专门显示首页内容的组件，让根路由指向该组件；</p>
+<p>所以推荐作法是：将根路由的<code>&lt;router-view&gt;</code>放置在<code>App.vue</code>中，但是根路由的<code>component</code>字段指向专门显示首页内容的组件(比如一个布局组件)；</p>
+<h3 id="问题2-视图位置"><a href="#问题2-视图位置" class="headerlink" title="问题2-视图位置"></a>问题2-视图位置</h3><p><mark><strong><code>&lt;router-link&gt;</code>和<code>&lt;router-view&gt;</code>必须位于同一个组件内吗</strong></mark>?</p>
+<p>答案是<mark>二者可以放置在不同的组件内</mark>，<a target="_blank" rel="noopener" href="https://router.vuejs.org/zh/guide/#router-view">文档</a>中对<code>&lt;router-view&gt;</code>的介绍是：<u>“<code>router-view</code> 将显示与 url 对应的组件。你可以把它放在<mark>任何地方</mark>，以适应你的布局”</u>；</p>
+<p>一开始对<mark>“任何地方”</mark>的理解局限为<code>&lt;router-link&gt;</code>所在组件的任意地方，但事实上<mark>“任何地方”</mark>除了组件内任意地方，还可以将<code>&lt;router-view&gt;</code>放在与<code>router-link</code>不同的组件中；以上的示例代码可以发现：<code>视图1-&gt;视图2</code>(<code>&lt;router-link to=&quot;/view2&quot;&gt;</code>)位于视图1中，而<code>&lt;router-view is=&quot;view2&quot;&gt;</code>位于<code>App.vue</code>中，点击该路由链接后能正常显示视图2；</p>
+<p>现在想了一下：很多模板类语法，本质都是代码复用，那么对于单页应用，所有的代码最终都在一个页面中，<code>&lt;router-link&gt;</code>和<code>&lt;router-view&gt;</code>最终都会转换成<code>index.html</code>中的元素：点击<code>&lt;router-link&gt;</code>后，会查找路由表，将匹配到的路由项中指定的组件在对应的<code>&lt;router-view&gt;</code>处渲染；联系单页应用的概念来理解刷新了自己以往的认知；</p>
+<h3 id="问题3-命名视图"><a href="#问题3-命名视图" class="headerlink" title="问题3-命名视图"></a>问题3-命名视图</h3><p><mark><strong><code>component</code>字段不能指定命名视图</strong></mark>？</p>
+<p>默认情况下，<code>component</code>指定的组件都是在非命名视图<code>&lt;router-view&gt;</code>中渲染，能否在给<code>component</code>赋值时使用命名视图呢？实际测试发现，<mark>命名视图必须配合<code>components</code>字段使用，<code>component</code>字段不直接命名视图</mark>；</p>
+<p><mark><strong>使用命名视图时，不匹配的视图会被重置</strong></mark>？</p>
+<p>案例中点击视图1中的<code>视图1-&gt;视图2</code>的路由链接后，视图2直接覆盖了视图1的内容，为什么不是视图1和视图2同时显示呢？在首页中明明设置了<code>&lt;router-view name=&quot;view1&quot;&gt;</code>和<code>&lt;router-view name=&quot;view2&quot;&gt;</code>，且是并列放置的。</p>
+<p>要想视图1和视图2同时显示，需修改<code>/view2</code>的路由为<code>&#123;path: &#39;/view2&#39; components: &#123;view1: view1, view2: view2&#125;&#125;</code>，即视图1的的组件也一同传入；所以<mark>使用命名视图时，未匹配的视图会被重置，如果要显示之前显示过的命名视图必须重传</mark>；</p>
+<h3 id="问题4-嵌套路由"><a href="#问题4-嵌套路由" class="headerlink" title="问题4-嵌套路由"></a>问题4-嵌套路由</h3><p><mark><strong>嵌套路由的<code>&lt;router-view&gt;</code>只能在顶层路由中</strong></mark>？</p>
+<p>因为案例中没有使用嵌套路由，所以以上案例不能发现该问题；但在调整项目结构过程中发现，与问题2中<code>&lt;router-view&gt;</code>可以在任意位置的结论不同，使用嵌套路由(使用了<code>children</code>且嵌套路由不以<code>/</code>开头)时，<code>&lt;router-view&gt;</code>必须设置在顶层路由指向的组件中。上升到单页应用代码在一起来理解，使用嵌套路由后，顶层路由所对应的组件形成了一个独立的组件空间，嵌套路由指定的组件只能在该独立空间被渲染，不能穿透到独立空间外；</p>
+<p>将嵌套路由以通过完整url的方式设置路由时，不存在该问题，所以<mark><code>children&gt;</code>形式的嵌套路由的视图只能设置在顶层路由对应的组件中</mark>；</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://z-yic.github.io/2023/07/04/Use-layui-vue/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -181,7 +283,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-07-06 07:59:58" itemprop="dateModified" datetime="2023-07-06T07:59:58+08:00">2023-07-06</time>
+                <time title="修改时间：2023-07-06 23:29:12" itemprop="dateModified" datetime="2023-07-06T23:29:12+08:00">2023-07-06</time>
               </span>
 
           
@@ -278,7 +380,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-07-06 07:59:58" itemprop="dateModified" datetime="2023-07-06T07:59:58+08:00">2023-07-06</time>
+                <time title="修改时间：2023-07-06 23:29:12" itemprop="dateModified" datetime="2023-07-06T23:29:12+08:00">2023-07-06</time>
               </span>
 
           
@@ -356,7 +458,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-07-06 07:59:58" itemprop="dateModified" datetime="2023-07-06T07:59:58+08:00">2023-07-06</time>
+                <time title="修改时间：2023-07-06 23:29:12" itemprop="dateModified" datetime="2023-07-06T23:29:12+08:00">2023-07-06</time>
               </span>
 
           
@@ -486,14 +588,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
