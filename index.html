@@ -181,7 +181,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-07-08 08:20:49" itemprop="dateModified" datetime="2023-07-08T08:20:49+08:00">2023-07-08</time>
+                <time title="修改时间：2023-07-08 08:52:10" itemprop="dateModified" datetime="2023-07-08T08:52:10+08:00">2023-07-08</time>
               </span>
 
           
@@ -211,10 +211,10 @@
 <ul>
 <li>前端通过日期输入框得到的日期格式为<code>2006-01-02</code>，同时意味着以JSON格式发送的日期字段也是这个格式；</li>
 <li>后端接受到该JSON数据后，我直接借助了gin框架中的<code>(*gin.Context).Bind()</code>方法尝试将得到的JSON数据与结构体实例绑定；但该方法底层使用的是默认的JSON解析器，对于JSON中的日期字段会先以字符串的形式进行反序列化，然后通过<code>time.Parse(layout, value string) (Time, error)</code>将字符串解析成<code>time.Time</code>类型，解析失败正是发生在这一步，因为<code>value</code>和<code>layout</code>的格式不一致，默认的JSON解析器中<code>layout</code>被设置为<code>2006-01-02T15:04:05Z07:00</code>，而传入的<code>value</code>的格式为<code>2006-01-02</code>，解析失败所以绑定失败！<br><strong>解决方法</strong><br>经过以上分析，解决该问题的关键是将<code>time.Parse(layout, value string) (Time, error)</code>中的<code>layout</code>参数设置成<code>2006-01-02</code>，为此不再使用默认的JSON解析器，而是自己重写该解析方法，在该结构体上实现<code>UnmarshalJSON(data []byte) error</code>即可；<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(user *User)</span></span> UnmarshalJSON(data []<span class="type">byte</span>) <span class="type">error</span> &#123;</span><br><span class="line">	<span class="keyword">type</span> tempUser <span class="keyword">struct</span> &#123;</span><br><span class="line">		Name <span class="type">string</span> <span class="string">`json:&quot;name&quot;`</span></span><br><span class="line">		Age  <span class="type">int</span>    <span class="string">`json:&quot;age&quot;`</span></span><br><span class="line">		Date <span class="type">string</span> <span class="string">`json:&quot;date&quot;`</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> tem tempUser</span><br><span class="line">	err := json.Unmarshal(data, &amp;tem)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	user.Name = tem.Name</span><br><span class="line">	user.Age = tem.Age</span><br><span class="line">	user.Date, err = time.Parse(<span class="string">&quot;2006-01-02&quot;</span>, tem.Date)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<strong>注意事项</strong></li>
+<strong>代码说明</strong></li>
 <li>先创建了一个可临时接收反序化结果的结构体<code>tempStruct</code>，其中<code>date</code>字段的数据类型为字符串，并使用其实例<code>tem</code>完成了反序化结果的接收；</li>
-<li>通过<code>user.Date, err = time.Parse(&quot;2006-01-02&quot;, tem.Date)</code>，将正确解析的解析结果赋值给了实际接收的结构体；</li>
-<li>因为完全<mark>重写了默认的解析规则，除了<code>date</code>字段外，其它字段也必须重新解析</mark>，否则其它字段无法解析JSON数据，会以零值输出；</li>
+<li>通过<code>user.Date, err = time.Parse(&quot;2006-01-02&quot;, tem.Date)</code>，将正确解析的<code>time.Time</code>类型的数据赋值给实际接收的结构体；</li>
+<li>因为完全<mark>重写了默认的解析规则，除了<code>date</code>字段外，其它字段也必须重新解析</mark>，否则其它字段无法解析JSON数据，会以零值输出；<br><strong>补充说明</strong><br>以上情况适用于<mark>客户端以JSON格式发送请求数据</mark>时，如果客户端直接通过表单提交数据(不转换成JSON格式)，使用<code>(*gin.Context)Bind()</code>也会遇到解析日期字符串失败的问题，但解决方法不再是重写<code>UnmarshalJSON()</code>，而是在定义结构体时，在该日期字段上，添加<code>time-fotmat:&quot;2006-01-02&quot;</code>标签，这样<code>Bind()</code>在解析表单数据中的日期字段时会按照<code>2006-01-02</code>的格式解析成<code>time.Time</code>类型的数据；<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">	Name <span class="type">string</span> 	<span class="string">`form:&quot;name&quot;`</span></span><br><span class="line">	Age  <span class="type">int</span> 		<span class="string">`form:&quot;age&quot;`</span></span><br><span class="line">	Date time.Time 	<span class="string">`form:&quot;date&quot; time-format:&quot;2006-01-02&quot;`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
 
       
@@ -266,7 +266,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-07-08 08:20:49" itemprop="dateModified" datetime="2023-07-08T08:20:49+08:00">2023-07-08</time>
+                <time title="修改时间：2023-07-08 08:52:10" itemprop="dateModified" datetime="2023-07-08T08:52:10+08:00">2023-07-08</time>
               </span>
 
           
@@ -393,7 +393,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-07-08 08:20:49" itemprop="dateModified" datetime="2023-07-08T08:20:49+08:00">2023-07-08</time>
+                <time title="修改时间：2023-07-08 08:52:10" itemprop="dateModified" datetime="2023-07-08T08:52:10+08:00">2023-07-08</time>
               </span>
 
           
@@ -490,7 +490,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-07-08 08:20:49" itemprop="dateModified" datetime="2023-07-08T08:20:49+08:00">2023-07-08</time>
+                <time title="修改时间：2023-07-08 08:52:10" itemprop="dateModified" datetime="2023-07-08T08:52:10+08:00">2023-07-08</time>
               </span>
 
           
@@ -568,7 +568,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-07-08 08:20:49" itemprop="dateModified" datetime="2023-07-08T08:20:49+08:00">2023-07-08</time>
+                <time title="修改时间：2023-07-08 08:52:10" itemprop="dateModified" datetime="2023-07-08T08:52:10+08:00">2023-07-08</time>
               </span>
 
           
