@@ -53,7 +53,16 @@ func (user *User) UnmarshalJSON(data []byte) error {
 	return nil
 }
 ```
-**注意事项**
+**代码说明**
 - 先创建了一个可临时接收反序化结果的结构体`tempStruct`，其中`date`字段的数据类型为字符串，并使用其实例`tem`完成了反序化结果的接收；
-- 通过`user.Date, err = time.Parse("2006-01-02", tem.Date)`，将正确解析的解析结果赋值给了实际接收的结构体；
+- 通过`user.Date, err = time.Parse("2006-01-02", tem.Date)`，将正确解析的`time.Time`类型的数据赋值给实际接收的结构体；
 - 因为完全<mark>重写了默认的解析规则，除了`date`字段外，其它字段也必须重新解析</mark>，否则其它字段无法解析JSON数据，会以零值输出；
+**补充说明**
+以上情况适用于<mark>客户端以JSON格式发送请求数据</mark>时，如果客户端直接通过表单提交数据(不转换成JSON格式)，使用`(*gin.Context)Bind()`也会遇到解析日期字符串失败的问题，但解决方法不再是重写`UnmarshalJSON()`，而是在定义结构体时，在该日期字段上，添加`time-fotmat:"2006-01-02"`标签，这样`Bind()`在解析表单数据中的日期字段时会按照`2006-01-02`的格式解析成`time.Time`类型的数据；
+```go
+type User struct {
+	Name string 	`form:"name"`
+	Age  int 		`form:"age"`
+	Date time.Time 	`form:"date" time-format:"2006-01-02"`
+}
+```
