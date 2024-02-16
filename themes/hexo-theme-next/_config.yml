@@ -635,9 +635,9 @@ livere_uid: # <your_uid>
 gitalk:
   enable: true
   github_id: z-Yic # GitHub repo owner
-  repo: z-Yic/blog-comments # Repository name to store issues
-  client_id: bd94d6caa2cdc132f6bb # GitHub Application Client ID
-  client_secret: ecd5fc457a59c249c2e848241eb0fc3597eb03c2 # GitHub Application Client Secret
+  repo: z-Yic/blog-comment # Repository name to store issues
+  client_id: cb2f9c08465313654301 # GitHub Application Client ID
+  client_secret: f5b3ad61255d75abadc0ff3e96fb19dd5a0ad4ea # GitHub Application Client Secret
   admin_user: z-Yic # GitHub repo owner and collaborators, only these guys can initialize gitHub issues
   distraction_free_mode: true # Facebook-like distraction free mode
   proxy: https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token
